@@ -25,6 +25,21 @@ export default function game() {
   const sonic = makeSonic(k.vec2(200, 745));
   sonic.setControls();
   sonic.setEvents();
+  sonic.onCollide("enemy", (enemy) => {
+    if (!sonic.isGrounded()) {
+      k.play("destroy", { volume: 0.5 });
+      k.play("hyper-ring", { volume: 0.5 });
+      k.destroy(enemy);
+      sonic.play("jump");
+      sonic.jump();
+      // TODO
+      return;
+    }
+
+    k.play("hurt", { volume: 0.5 });
+    //TODO
+    k.go("gameover");
+  });
 
   let gameSpeed = 300;
   k.loop(1, () => {
@@ -51,6 +66,10 @@ export default function game() {
   };
 
   spawnMotoBug();
+
+  const spawnRing = () => {
+    //const ring = //Todo;
+  };
 
   k.add([
     k.rect(1920, 300),
